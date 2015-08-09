@@ -1,0 +1,50 @@
+<div>
+  <div class="wrapper-md">
+    <div class="panel panel-default wrapper pos-rlt">
+      <div class="loader-overlay" ng-show="data.isLoading"></div>
+      <div>
+        <create-button></create-button>
+      </div>
+      <div class="line line-dashed b-b line-lg m-b"></div>
+      <div class="row">
+        <table class="table m-b-none fullwidth-inline-edit" ui-jq="footable" data-filter="#filter" data-page-size="20">
+          <thead>
+          <tr class="header-row">
+            <th>
+              <span>STT</span>
+            </th>
+            $listHeaderColumn
+            <th>
+              <span>Thao tác</span>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="item in data.items">
+            <td>
+              {{ $index + 1 }}
+            </td>
+            $listColumns
+            <td>
+              <edit-button ui-sref="$viewState({id: item.id})"></edit-button>
+              <remove-button></remove-button>
+            </td>
+          </tr>
+          </tbody>
+
+          <tfoot class="hide-if-no-paging">
+          <tr class="footer-row">
+            <td colspan="$listColumnLength" class="text-center">
+              <ul class="pagination"></ul>
+            </td>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="wrapper text-muted" ng-hide="data.items.length">
+        <span>Không có dữ liệu</span>
+      </div>
+    </div>
+  </div>
+</div>

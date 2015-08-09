@@ -1,0 +1,131 @@
+<div>
+  <div class="wrapper-md">
+    <div class="panel panel-default pos-rlt">
+
+      <div class="loader-overlay" ng-show="data.isLoading"></div>
+
+      <a ng-href="{{data.export_url}}" class="btn btn-default m-l-xs pull-right m-b">
+        <i class="fa fa-print"></i>
+        Xuất danh sách
+      </a>
+
+      <div class="line line-dashed b-b line-lg m-b"></div>
+
+      <div class="row">
+        <div class="col-lg-3">
+          <dot-tuyen-sinh></dot-tuyen-sinh>
+        </div>
+        <div class="col-lg-3">
+          <co-so-dao-tao></co-so-dao-tao>
+        </div>
+        <div class="col-lg-3">
+          <nganh-thac-si></nganh-thac-si>
+        </div>
+        <div class="col-lg-3">
+          <button class="btn btn-default" ng-click="reset()">
+            <i class="glyphicon glyphicon-filter"></i>
+            Reset
+          </button>
+        </div>
+      </div>
+
+
+      <div class="line line-dashed b-b line-lg pull-in m-b"></div>
+
+      <my-pagination-limit></my-pagination-limit>
+
+      <table class="table m-b-none qlhv-table" ui-jq="footable" data-filter="#filter" ng-init="selectedIndex = 0" data-page-size="99999">
+        <thead>
+        <tr class="header-row">
+          <th>
+            <span>STT</span>
+          </th>
+          <th>
+            <span>Mã HV</span>
+          </th>
+          <th>
+            <span>Họ và tên</span>
+          </th>
+          <th>
+            <span>Giới tính</span>
+          </th>
+          <th>
+            <span>Ngày sinh</span>
+          </th>
+          <th>
+            <span>Tỉnh thành</span>
+          </th>
+          <th>
+            <span>CMND</span>
+          </th>
+          <th>
+            <span>Ngành học</span>
+          </th>
+          <th>
+            <span>Cơ sở đào tạo</span>
+          </th>
+          <th>
+            <span>Đối tượng</span>
+          </th>
+          <th>
+            <span>Thao tác</span>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in data.items" ng-class="{selected: $parent.selectedIndex == $index}" ng-click="$parent.selectedIndex = $index">
+          <td>
+            {{ data.pagination.firstIndex + $index }}
+          </td>
+          <td>{{ item.ma_hoc_vien }}</td>
+          <td>
+            <a ui-sref="ql-dao-tao.dt-thac-si.hoc-vien-show({id:item.id})" ng-show="data.permission.view">
+              {{ item.ho_ten_dem + ' ' + item.ten }}
+            </a>
+            <span ng-hide="data.permission.view">
+              {{ item.ho_ten_dem + ' ' + item.ten }}
+            </span>
+          </td>
+          <td>{{ item.gioi_tinh | gioi_tinh }}</td>
+          <td>{{ item.ngay_sinh | date : 'dd/MM/yyyy' }}</td>
+          <td>{{ item.que_quan_tinh_obj.ten }}</td>
+          <td>{{ item.so_cmnd }}</td>
+          <td>{{ item.nganh_dang_ky_obj.ten }}</td>
+          <td>{{ item.co_so_dao_tao_obj.ten }}</td>
+          <td>{{ item.doi_tuong_uu_tien_obj.ten_doi_tuong }}</td>
+          <td>
+            <div class="btn-group pull-right" dropdown is-open="item.isopenMenu"
+                 ng-show="data.permission.view || data.permission.remove || data.xemDiem"
+                 ng-mouseover="item.isopenMenu = true">
+              <button type="button" class="btn btn-default" dropdown-toggle ng-disabled="disabled">
+                Thao tác<span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu animated fadeInRight w">
+                <li>
+                  <a ui-sref="ql-dao-tao.dt-thac-si.hoc-vien-show({id:item.id})" ng-show="data.permission.view">Xem</a>
+                </li>
+                <li>
+                  <a ui-sref="ql-dao-tao.dt-thac-si.hoc-vien-bang-diem({id:item.id})" ng-show="data.xemDiem">Bảng điểm</a>
+                </li>
+                <li class="divider" ng-show="data.permission.remove"></li>
+                <li><a href="javascript:void(0)" ng-click="remove($index)" ng-show="data.permission.remove">Xóa</a></li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+
+        <tfoot class="hide-if-no-paging">
+        <tr class="footer-row">
+          <td colspan="11" class="text-center">
+            <ul class="pagination"></ul>
+          </td>
+        </tr>
+        </tfoot>
+      </table>
+
+      <my-pagination></my-pagination>
+
+    </div>
+  </div>
+</div>
