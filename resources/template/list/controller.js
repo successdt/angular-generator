@@ -35,7 +35,7 @@ app.controller('$indexControllerNameCtrl', function($scope, $http, $state, APP_C
   $scope.remove = function($index) {
     var $id = $scope.data.items[$index].id;
 
-    if ( confirm('Bạn có chắc chắn muốn không?') ) {
+    if ( confirm('Bạn có chắc chắn muốn xóa không?') ) {
       $indexControllerNameService.remove($id).then(function( response ) {
         if(response.success) {
           $scope.data.items.splice($index, 1);
