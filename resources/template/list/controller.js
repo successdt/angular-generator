@@ -18,9 +18,8 @@ app.controller('$indexControllerNameCtrl', function($scope, $http, $state, APP_C
   $scope.loadData = function() {
     $scope.data.isLoading = true;
 
-    $indexControllerNameService.getList().then(function(response){
+    $indexControllerNameService.getList($scope.data).then(function(response){
       $scope.data.isLoading = false;
-      response = response.data;
       if(response.success) {
         $scope.data.items = response.data;
       } else {

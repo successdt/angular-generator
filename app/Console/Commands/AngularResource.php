@@ -58,8 +58,9 @@ class AngularResource extends Angular
 	    $viewState .= 'xem_' . $states[$length - 1];
 
 	    // process router
+	    $url = str_replace('_', '-', $state);
 	    $this->_transformFile('router.js', 'router.js', compact('fullState', 'indexControllerName', 'indexTplOutput',
-		    'state', 'itemTplOutput', 'createState', 'viewState'));
+		    'state', 'itemTplOutput', 'createState', 'viewState', 'url'));
 
 	    // process permissions file
 	    $this->_transformFile('permissions.js', 'permissions.js', compact('state'));
@@ -91,11 +92,11 @@ class AngularResource extends Angular
 			$listHeaderColumn .= "
 				<th>
 					<span>$field</span>
-				<th>";
+				</th>";
 		    $listColumns .= "
 				<td>
 					<span>{{ item.$field }}</span>
-				<td>";
+				</td>";
 	    }
 
 	    $indexTplInput = 'list/tpl.html';
@@ -114,7 +115,7 @@ class AngularResource extends Angular
 		       <div class="form-group">
 		          <label class="col-lg-2 control-label"></label>
 		          <div class="col-lg-3">
-		            <input type="text" class="form-control" name="ma_mon_thi" ng-model="data.item.' . $field . '" ng-disabled="data.isDisabled"
+		            <input type="text" class="form-control" name="' . $field . '" ng-model="data.item.' . $field . '" ng-disabled="data.isDisabled"
 		                   placeholder="">
 		          </div>
 		        </div>' . PHP_EOL;
