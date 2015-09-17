@@ -4,9 +4,12 @@
 app.controller('$indexControllerNameCtrl', function($scope, $http, $state, APP_CONFIG, SessionService, toaster,
                                                     $indexControllerNameService, UserService) {
   $scope.data = {
-    isLoading : false,
-    permission : UserService.generatePermissions('$permissionLink'),
-    items : []
+    isLoading: false,
+    permission: UserService.generatePermissions('$permissionLink'),
+    items: [],
+    filter: {
+      limit: 0
+    }
   }
 
 

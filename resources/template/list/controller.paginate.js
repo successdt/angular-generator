@@ -4,12 +4,12 @@
 app.controller('$indexControllerNameCtrl', function($scope, $http, $state, APP_CONFIG, SessionService, toaster,
                                            $location, $indexControllerNameService, CommonService, UserService) {
   $scope.data = {
-    items : [],
-    isLoading : false,
-    export_url : '',
-    filter : {},
-    pagination : {},
-    permission : UserService.generatePermissions('$permissionLink')
+    items: [],
+    isLoading: false,
+    export_url: '',
+    filter: {},
+    pagination: {},
+    permission: UserService.generatePermissions('$permissionLink')
   }
 
   // list thi_sinh

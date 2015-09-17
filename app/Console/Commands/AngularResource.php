@@ -85,7 +85,7 @@ class AngularResource extends Angular
 	    // process template
 		$fields = $this->ask('Enter list of fields for index (separated by comma)');
 	    $fields = explode(',', $fields);
-	    $listColumnLength = count($fields);
+	    $listColumnLength = count($fields) + 2;
 	    $listHeaderColumn = '';
 	    $listColumns = '';
 	    foreach($fields as $field) {

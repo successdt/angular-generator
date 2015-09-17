@@ -4,11 +4,11 @@
 app.controller('$indexControllerNameCreateCtrl', function($scope, $http, $state, APP_CONFIG, SessionService,
                 toaster, $location, $stateParams, CommonService, $indexControllerNameService, $rootScope, UserService) {
   $scope.data = {
-    isLoading : false,
-    item : {},
-    isDisabled : !angular.isUndefined($stateParams.id),
-    isEditing : !angular.isUndefined($stateParams.id),
-    permission : UserService.generatePermissions('$permissionLink')
+    isLoading: false,
+    item: {},
+    isDisabled: !angular.isUndefined($stateParams.id),
+    isEditing: !angular.isUndefined($stateParams.id),
+    permission: UserService.generatePermissions('$permissionLink')
   }
 
 

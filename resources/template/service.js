@@ -4,8 +4,10 @@ angular.module('app')
   .service('$controllerNameService', ["$http", "SessionService", "APP_CONFIG", "$q", "CommonService", function($http, SessionService, APP_CONFIG, $q, CommonService) {
 
     this.getList = function($scopeData) {
-      $scopeData = this.addFilterParams($scopeData);
+      //$scopeData = this.addFilterParams($scopeData);
       //$scopeData = CommonService.addPaginationParams($scopeData);
+      $scopeData.filter.limit = 0;
+
       return $http.get(APP_CONFIG.baseUrl + APP_CONFIG.$constant, {params : $scopeData.filter}).then(function(response){
         response = response.data;
 
