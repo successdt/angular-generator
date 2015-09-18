@@ -1,6 +1,6 @@
 var a =
 {
-  title: "Nhóm tài khoản",
+  title: "Title",
   children: [
     {
       title: "Danh sách",
