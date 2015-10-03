@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('app')
-  .service('$controllerNameService', ["$http", "SessionService", "APP_CONFIG", "$q", "CommonService", function($http, SessionService, APP_CONFIG, $q, CommonService) {
+  .service('$controllerNameService', function($http, SessionService, APP_CONFIG, $q, CommonService) {
 
     this.getList = function($scopeData) {
       //$scopeData = this.addFilterParams($scopeData);
@@ -40,4 +40,4 @@ angular.module('app')
         return response;
       });
     }
-	}]);
+	});
