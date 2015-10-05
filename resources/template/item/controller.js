@@ -38,8 +38,10 @@ app.controller('$indexControllerNameCreateCtrl', function($scope, $http, $state,
   }
 
   $scope.save = function () {
-    var $id = $scope.data.isEditing ? $stateParams.id : '';
-    $indexControllerNameService.save($id, $scope.data.item).then(function(response) {
+    var id = $scope.data.isEditing ? $stateParams.id : '';
+    var data = angular.copy($scope.data.item);
+
+    $indexControllerNameService.save(id, data).then(function(response) {
       $scope.data.isLoading = false;
       if(response.success) {
         toaster.pop('success', 'Thông tin', 'Lưu thành công');
