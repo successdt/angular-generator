@@ -12,9 +12,9 @@ app.controller('$indexControllerNameCreateCtrl', function($scope, $http, $state,
   }
 
 
-  $scope.init = function () {
-    $scope.data.isLoading = true;
+  function _init() {
     if($scope.data.isEditing) {
+      $scope.data.isLoading = true;
       var $id = $stateParams.id;
 
       $indexControllerNameService.view($id).then(function(response) {
@@ -29,9 +29,6 @@ app.controller('$indexControllerNameCreateCtrl', function($scope, $http, $state,
       // default value
     }
   }
-
-  $scope.init();
-
 
   $scope.reset = function() {
 
@@ -51,4 +48,6 @@ app.controller('$indexControllerNameCreateCtrl', function($scope, $http, $state,
       }
     });
   }
+
+  _init();
 });

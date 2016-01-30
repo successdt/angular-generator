@@ -13,7 +13,7 @@ app.controller('$indexControllerNameCtrl', function($scope, $http, $state, APP_C
   }
 
 
-  $scope.init = function() {
+  function _init() {
     $scope.loadData();
   }
 
@@ -31,9 +31,6 @@ app.controller('$indexControllerNameCtrl', function($scope, $http, $state, APP_C
     });
   }
 
-  $scope.init();
-
-
   $scope.remove = function($index) {
     var $id = $scope.data.items[$index].id;
 
@@ -48,4 +45,6 @@ app.controller('$indexControllerNameCtrl', function($scope, $http, $state, APP_C
       });
     }
   };
+
+  _init();
 });
