@@ -4,18 +4,17 @@
     <div class="panel panel-default pos-rlt">
 
       <loader-overlay></loader-overlay>
-
-      <div>
-        <exit-button></exit-button>
-        <save-button ng-hide="data.isDisabled"></save-button>
-        <button class="btn btn-success pull-right m-r-xs" ng-click="data.isDisabled = !data.isDisabled"
-                ng-show="data.isDisabled && data.permission.update">
-          Sửa
-        </button>
-      </div>
-      <div class="line line-dashed b-b line-lg m-b m-r-none m-l-none"></div>
       
-      <form role="form" class="form-validation form-horizontal m-t" name="form_tuyen_sinh">
+      <form role="form" class="form-validation form-horizontal m-t" name="main_form" ng-submit="save()">
+        <div>
+          <exit-button></exit-button>
+          <submit-button ng-hide="data.isDisabled"></submit-button>
+          <span class="btn btn-success pull-right m-r-xs" ng-click="data.isDisabled = !data.isDisabled"
+                  ng-show="data.isDisabled && data.permission.update">
+            Sửa
+          </span>
+        </div>
+        <div class="line line-dashed b-b line-lg m-b m-r-none m-l-none"></div>
 
         $itemFields
 

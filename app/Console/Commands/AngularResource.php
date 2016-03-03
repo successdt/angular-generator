@@ -115,8 +115,7 @@ class AngularResource extends Angular
 		       <div class="form-group">
 		          <label class="col-lg-2 control-label"></label>
 		          <div class="col-lg-3">
-		            <input type="text" class="form-control" name="' . $field . '" ng-model="data.item.' . $field . '" ng-disabled="data.isDisabled"
-		                   placeholder="">
+		            <input type="text" class="form-control" name="' . $field . '" ng-model="data.item.' . $field . '" ng-disabled="data.isDisabled">
 		          </div>
 		        </div>' . PHP_EOL;
 	    }
