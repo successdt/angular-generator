@@ -1,0 +1,45 @@
+// http://ionicframework.com/docs/v2/theming/
+
+
+// App Shared Imports
+// --------------------------------------------------
+// These are the imports which make up the design of this app.
+// By default each design mode includes these shared imports.
+// App Shared Sass variables belong in app.variables.scss.
+
+// import pages css
+// end import pages css
+
+// global styles
+
+.primary-bg {
+  background-color: color($colors, primary);
+}
+
+.secondary-bg {
+  background-color: color($colors, secondary);
+}
+
+.gray-bg {
+  background-color: color($colors, gray);
+}
+
+.light-bg {
+  background-color: color($colors, light);
+}
+
+.padding-xs {
+  padding: 10px;
+}
+
+.round {
+  border-radius: 3px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}

@@ -21,14 +21,15 @@ class Angular extends Command
      */
     protected $description = 'Generate angular list';
 
-	public $tplUrl = null;
-	public $outPut = null;
+    public $tplUrl = null;
+    public $outPut = null;
 
-	public function __construct() {
-		$this->tplUrl =  base_path('resources/template/');
-		$this->outPut =  base_path('resources/generator/');
-		parent::__construct();
-	}
+    public function __construct()
+    {
+        $this->tplUrl = base_path('resources/template/');
+        $this->outPut = base_path('resources/generator/');
+        parent::__construct();
+    }
 
 
     /**
@@ -41,79 +42,99 @@ class Angular extends Command
 
     }
 
-    protected function _snakeToCamel($val) {
+    protected function _snakeToCamel($val)
+    {
         $val = str_replace(' ', '', ucwords(str_replace('_', ' ', $val)));
         //$val = strtolower(substr($val,0,1)).substr($val,1);
         return $val;
     }
 
-	/**
-	 * create file with content, and create folder structure if doesn't exist
-	 * @param String $filepath
-	 * @param String $message
-	 */
-	protected function _forceFilePutContents ($filepath, $message){
-		try {
-			$isInFolder = preg_match("/^(.*)\/([^\/]+)$/", $filepath, $filepathMatches);
-			if($isInFolder) {
-				$folderName = $filepathMatches[1];
-				$fileName = $filepathMatches[2];
-				if (!is_dir($folderName)) {
-					mkdir($folderName, 0777, true);
-				}
-			}
-			if(file_exists($filepath)) {
-				unlink($filepath);
-			}
-			file_put_contents($filepath, $message);
-		} catch (Exception $e) {
-			echo "ERR: error writing '$message' to '$filepath', ". $e->getMessage();
-		}
-	}
+    /**
+     * Covert CamelCase to snake case
+     * @param $str
+     */
+    protected function _camelToSnake($str)
+    {
+        return ltrim(strtolower(preg_replace('/[A-Z]/', '_$0', $str)), '_');
+    }
 
-	protected function _getInput($fileName) {
-		return file_get_contents($this->tplUrl . $fileName);
-	}
+    /**
+     * Convert CamelCase to file name
+     * @param $str
+     */
+    protected function _convertFileName($str)
+    {
+        return ltrim(strtolower(preg_replace('/[A-Z]/', '-$0', $str)), '-');
+    }
 
-	protected function _writeOutPut($fileName, $massage) {
-		$this->_forceFilePutContents($this->outPut . $fileName, $massage);
-	}
+    /**
+     * create file with content, and create folder structure if doesn't exist
+     * @param String $filepath
+     * @param String $message
+     */
+    protected function _forceFilePutContents($filepath, $message)
+    {
+        try {
+            $isInFolder = preg_match("/^(.*)\/([^\/]+)$/", $filepath, $filepathMatches);
+            if ($isInFolder) {
+                $folderName = $filepathMatches[1];
+                $fileName = $filepathMatches[2];
+                if (!is_dir($folderName)) {
+                    mkdir($folderName, 0777, true);
+                }
+            }
+            if (file_exists($filepath)) {
+                unlink($filepath);
+            }
+            file_put_contents($filepath, $message);
+        } catch (Exception $e) {
+            echo "ERR: error writing '$message' to '$filepath', " . $e->getMessage();
+        }
+    }
 
-	/**
-	 * Open input, replace string and write output
-	 * @param $inputFile
-	 * @param $outPutFile
-	 * @param $message
-	 */
-	protected function _transformFile($inputFile, $outPutFile, $message) {
-		$content = $this->_getInput($inputFile);
-		$search = array_keys($message);
-		$replace = array_values($message);
+    protected function _getInput($fileName)
+    {
+        return file_get_contents($this->tplUrl . $fileName);
+    }
 
-		foreach ($search as &$value) {
-			$value = '$'.$value;
-		}
-		$content = str_replace($search, $replace, $content);
+    protected function _writeOutPut($fileName, $massage)
+    {
+        $this->_forceFilePutContents($this->outPut . $fileName, $massage);
+    }
 
-		$this->_writeOutPut($outPutFile, $content);
+    /**
+     * Open input, replace string and write output
+     * @param $inputFile
+     * @param $outPutFile
+     * @param $message
+     */
+    protected function _transformFile($inputFile, $outPutFile, $message)
+    {
+        $content = $this->_getInput($inputFile);
+        $search = array_keys($message);
+        $replace = array_values($message);
+        $content = str_replace($search, $replace, $content);
 
-	}
+        $this->_writeOutPut($outPutFile, $content);
+
+    }
 
 
-	/**
-	 * Clear output directory
-	 */
-	protected function _clearOutput($dir) {
-		if (is_dir($dir)) {
-			$objects = scandir($dir);
-			foreach ($objects as $object) {
-				if ($object != "." && $object != "..") {
-					if (filetype($dir."/".$object) == "dir") $this->_clearOutput($dir."/".$object); else unlink($dir."/".$object);
-				}
-			}
-			reset($objects);
-			rmdir($dir);
-		}
-	}
+    /**
+     * Clear output directory
+     */
+    protected function _clearOutput($dir)
+    {
+        if (is_dir($dir)) {
+            $objects = scandir($dir);
+            foreach ($objects as $object) {
+                if ($object != "." && $object != "..") {
+                    if (filetype($dir . "/" . $object) == "dir") $this->_clearOutput($dir . "/" . $object); else unlink($dir . "/" . $object);
+                }
+            }
+            reset($objects);
+            rmdir($dir);
+        }
+    }
 
 }

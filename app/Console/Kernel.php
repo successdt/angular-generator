@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \Hottab\Console\Commands\Inspire::class,
-        \Hottab\Console\Commands\AngularResource::class
+        \Hottab\Console\Commands\AngularResource::class,
+        \Hottab\Console\Commands\Ionic::class
     ];
 
     /**
