@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {{SERVICE_NAMES}} from "./mock-{service-name}";
+import {{SERVICE_NAMES}} from "./mock-{service-names}";
 
 @Injectable()
 export class {ServiceName}Service {

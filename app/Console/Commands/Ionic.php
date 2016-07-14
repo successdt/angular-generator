@@ -12,7 +12,7 @@ class Ionic extends Angular
      *
      * @var string
      */
-    protected $signature = 'ionic:generate {type} {items} {--reset}';
+    protected $signature = 'ionic:generate {type} {items} {--reset} {--output=}';
 
     /**
      * The console command description.
@@ -43,12 +43,19 @@ class Ionic extends Angular
         $items = $this->argument('items');
         // reset option
         $reset = $this->option('reset');
+        // output option
+        $output = $this->option('output');
 
         if ($reset) {
             $this->_clearOutput($this->outPut);
             $this->_transformFile('app.html', 'app.html', []);
             $this->_transformFile('app.ts', 'app.ts', []);
             $this->_transformFile('theme/app.core.scss', 'theme/app.core.scss', []);
+        }
+
+        if ($output) {
+            // $output is project directory, example: ionic => htdocs/ionic/app
+            $this->outPut = base_path('../' . $output . '/app/');
         }
 
         // process list items
@@ -58,6 +65,8 @@ class Ionic extends Angular
                 $this->generatePage($item);
             } elseif ($type == 'service') {
                 $this->generateService($item);
+            } else {
+                $this->info('Need to choose page or service');
             }
         }
 
@@ -101,7 +110,8 @@ class Ionic extends Angular
             '/* define services */' => $serviceVars
         ]);
         $this->_transformFile($pageHtml, $pageDir . $pageFileName . '.html', [
-            '{page-name}' => $pageFileName
+            '{page-name}' => $pageFileName,
+            '{PageName}' => $pageName
         ]);
         $this->_transformFile($pageStyle, $pageDir . $pageFileName . '.scss', [
             '{page-name}' => $pageFileName
@@ -140,7 +150,7 @@ class Ionic extends Angular
         // generate output
         $this->_transformFile('services/service.ts', 'services/' . $serviceFileName . '-service.ts', [
             '{SERVICE_NAMES}' => $mockVarName,
-            '{service-name}' => $serviceFileName,
+            '{service-names}' => $serviceFileNamePlural,
             '{serviceNames}' => lcfirst($serviceNamePlural),
             '{ServiceName}' => $serviceName
         ]);
@@ -153,7 +163,7 @@ class Ionic extends Angular
         $tmpTplDir = $this->tplUrl;
         $this->tplUrl = $this->outPut;
         $this->_transformFile('app.ts', 'app.ts', [
-            '// end import services' => "import {{$serviceName}Service} from './service/{$serviceFileName}-service';" . PHP_EOL . '// end import services',
+            '// end import services' => "import {{$serviceName}Service} from './services/{$serviceFileName}-service';" . PHP_EOL . '// end import services',
             '/* import services */' => $serviceName . 'Service, /* import services */'
         ]);
         // restore value
