@@ -43,3 +43,80 @@
 .uppercase {
   text-transform: uppercase;
 }
+
+// text size
+.text-2x {
+  font-size: 2em;
+}
+
+.text-1x {
+  font-size: 1em;
+}
+
+.text-sm {
+  font-size: 0.7em;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+// badge style
+ion-badge {
+  &.square {
+    border-radius: 0;
+  }
+}
+
+// card style
+.card {
+  background: #FFF;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+// navbar style
+ion-navbar.no-border {
+
+  .toolbar-background {
+    border: none;
+  }
+}
+
+// list style
+.list-no-border {
+
+  .item:first-child {
+    border: none;
+  }
+  .item:last-child {
+    border: none;
+  }
+
+  .item {
+    .item-inner {
+      border: none;
+    }
+  }
+}
+
+.list-full-border {
+  @extend .list-no-border;
+
+  .item,
+  .item:first-child,
+  .item:last-child {
+    border-bottom: 1px solid color($colors, border-color);
+
+    .item-inner {
+      border: none;
+    }
+  }
+}
+
+// item style
+.item.no-border {
+
+  .item-inner {
+    border: none;
+  }
+}
