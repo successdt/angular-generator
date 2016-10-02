@@ -106,9 +106,9 @@ class Angular extends Command
      * Open input, replace string and write output
      * @param $inputFile
      * @param $outPutFile
-     * @param $message
+     * @param array $message
      */
-    protected function _transformFile($inputFile, $outPutFile, $message)
+    protected function _transformFile($inputFile, $outPutFile, $message = [])
     {
         $content = $this->_getInput($inputFile);
         $search = array_keys($message);
@@ -137,4 +137,36 @@ class Angular extends Command
         }
     }
 
+    /**
+     * Transform file with regular expression
+     * @param $inputFile
+     * @param $outPutFile
+     * @param $message
+     */
+    protected function transformFileWithRegex($inputFile, $outPutFile, $message)
+    {
+        $content = $this->_getInput($inputFile);
+
+        foreach ($message as $key => $value) {
+            echo $key . PHP_EOL;
+            $content = preg_replace($key, $value, $content);
+        }
+
+        $this->_writeOutPut($outPutFile, $content);
+    }
+
+    /**
+     * Scan dir to find file and directory
+     * @param $dir
+     * @return mixed
+     */
+    public function scanDir($dir)
+    {
+        $objects = scandir($dir);
+
+        // unset 2 first elements
+        unset($objects[0], $objects[1]);
+
+        return $objects;
+    }
 }

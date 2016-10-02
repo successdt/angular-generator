@@ -48,9 +48,9 @@ class Ionic extends Angular
 
         if ($reset) {
             $this->_clearOutput($this->outPut);
-            $this->_transformFile('app.html', 'app.html', []);
-            $this->_transformFile('app.ts', 'app.ts', []);
-            $this->_transformFile('theme/app.core.scss', 'theme/app.core.scss', []);
+            $this->_transformFile('app.html', 'app.html');
+            $this->_transformFile('app.ts', 'app.ts');
+            $this->_transformFile('theme/app.core.scss', 'theme/app.core.scss');
         }
 
         if ($output) {

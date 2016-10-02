@@ -129,9 +129,9 @@ class AngularResource extends Angular
      * Open input, replace string and write output
      * @param $inputFile
      * @param $outPutFile
-     * @param $message
+     * @param array $message
      */
-    protected function _transformFile($inputFile, $outPutFile, $message)
+    protected function _transformFile($inputFile, $outPutFile, $message = [])
     {
         $content = $this->_getInput($inputFile);
         $search = array_keys($message);
