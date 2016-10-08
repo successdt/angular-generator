@@ -1,27 +1,24 @@
 import {Component} from '@angular/core';
-import {Platform, ionicBootstrap} from 'ionic-angular';
+import {Platform} from 'ionic-angular';
 import {ViewChild} from '@angular/core';
 import {StatusBar} from 'ionic-native';
-
-// import services
-// end import services
 
 // import pages
 // end import pages
 
 @Component({
-  templateUrl: 'build/app.html',
+  templateUrl: 'app.html',
   queries: {
     nav: new ViewChild('content')
   }
 })
 export class MyApp {
 
-  private rootPage:any;
+  public rootPage: any;
 
-  private nav:any;
+  public nav: any;
 
-  private pages = [
+  public pages = [
     {
       title: 'Home',
       icon: 'ios-home-outline',
@@ -31,8 +28,8 @@ export class MyApp {
     // import menu
   ];
 
-  constructor(private platform:Platform) {
-    this.rootPage = RegisterPage;
+  constructor(public platform: Platform) {
+    this.rootPage = HomePage;
 
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -47,5 +44,3 @@ export class MyApp {
     this.nav.setRoot(page.component);
   }
 }
-
-ionicBootstrap(MyApp, [/* import services */])

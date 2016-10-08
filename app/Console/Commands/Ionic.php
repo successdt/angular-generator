@@ -48,14 +48,15 @@ class Ionic extends Angular
 
         if ($reset) {
             $this->_clearOutput($this->outPut);
-            $this->_transformFile('app.html', 'app.html');
-            $this->_transformFile('app.ts', 'app.ts');
-            $this->_transformFile('theme/app.core.scss', 'theme/app.core.scss');
+            $this->_transformFile('app/app.html', 'app/app.html');
+            $this->_transformFile('app/app.component.ts', 'app/app.component.ts');
+            $this->_transformFile('app/app.module.ts', 'app/app.module.ts');
+            $this->_transformFile('app/app.scss', 'app/app.scss');
         }
 
         if ($output) {
             // $output is project directory, example: ionic => htdocs/ionic/app
-            $this->outPut = base_path('../' . $output . '/app/');
+            $this->outPut = base_path('../' . $output . '/src/');
         }
 
         // process list items
@@ -101,27 +102,29 @@ class Ionic extends Angular
         $pageHtml = 'pages/page.html';
         $pageStyle = 'pages/page.scss';
         $pageDir = 'pages/' . $pageFileName . '/';
+        $pageSelector = 'page-' . $pageFileName;
 
         // generate output
         $this->_transformFile($pageController, $pageDir . $pageFileName . '.ts', [
-            '{page-name}' => $pageFileName,
+            '{page-name}' => $pageSelector,
             '{PageName}' => $pageName,
+            '{name}' => $pageFileName,
             '// import services' => $serviceText,
             '/* define services */' => $serviceVars
         ]);
         $this->_transformFile($pageHtml, $pageDir . $pageFileName . '.html', [
-            '{page-name}' => $pageFileName,
+            //'{page-name}' => $pageFileName,
             '{PageName}' => $pageName
         ]);
         $this->_transformFile($pageStyle, $pageDir . $pageFileName . '.scss', [
-            '{page-name}' => $pageFileName
+            '{page-name}' => $pageSelector
         ]);
         
         // add to global file
         $tmpTplDir = $this->tplUrl;
         $this->tplUrl = $this->outPut;
-        $this->_transformFile('app.ts', 'app.ts', [
-            '// end import pages' => "import {{$pageName}Page} from './pages/$pageFileName/$pageFileName';" . PHP_EOL . '// end import pages',
+        $this->_transformFile('app/app.component.ts', 'app/app.component.ts', [
+            '// end import pages' => "import {{$pageName}Page} from '../pages/$pageFileName/$pageFileName';" . PHP_EOL . '// end import pages',
             '// import menu' => "
                 {
                   title: '{$pageName}',
@@ -129,12 +132,18 @@ class Ionic extends Angular
                   count: 0,
                   component: {$pageName}Page
                 },
-                // import menu
-            "
+                // import menu"
         ]);
-        $this->_transformFile('theme/app.core.scss', 'theme/app.core.scss', [
+
+        $this->_transformFile('app/app.module.ts', 'app/app.module.ts', [
+            '// end import pages' => "import {{$pageName}Page} from '../pages/$pageFileName/$pageFileName';" . PHP_EOL . '// end import pages',
+            '/* import pages */' => $pageName . 'Page,' . PHP_EOL . '    /* import pages */'
+        ]);
+        /*
+        $this->_transformFile('app/app.scss', 'app/app.scss', [
             '// end import pages css' => '@import "../' . $pageDir . $pageFileName . '";' . PHP_EOL . '// end import pages css'
         ]);
+        */
         // restore value
         $this->tplUrl = $tmpTplDir;
     }
@@ -162,9 +171,9 @@ class Ionic extends Angular
         // add to global file
         $tmpTplDir = $this->tplUrl;
         $this->tplUrl = $this->outPut;
-        $this->_transformFile('app.ts', 'app.ts', [
-            '// end import services' => "import {{$serviceName}Service} from './services/{$serviceFileName}-service';" . PHP_EOL . '// end import services',
-            '/* import services */' => $serviceName . 'Service, /* import services */'
+        $this->_transformFile('app/app.module.ts', 'app/app.module.ts', [
+            '// end import services' => "import {{$serviceName}Service} from '../services/{$serviceFileName}-service';" . PHP_EOL . '// end import services',
+            '/* import services */' => $serviceName . 'Service,' . PHP_EOL . '    /* import services */'
         ]);
         // restore value
         $this->tplUrl = $tmpTplDir;

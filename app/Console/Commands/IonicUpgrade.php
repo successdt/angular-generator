@@ -67,8 +67,8 @@ class IonicUpgrade extends Angular
         $newServicesDir = $newSrcDir . '/services';
         $appModuleFile = $newAppDir . '/app.module.ts';
         $appComponentFile = $newAppDir . '/app.component.ts';
-        $newAppHtmlFile = $newSrcDir . '/app.html';
-        $newAppCSSFile = $newSrcDir . '/theme/global.scss';
+        $newAppHtmlFile = $newAppDir . '/app.html';
+        $newAppCSSFile = $newAppDir . '/app.scss';
         $newVariableCSSFile = $newSrcDir . '/theme/variables.scss';
 
         $pageClasses = [];
@@ -98,14 +98,15 @@ class IonicUpgrade extends Angular
                     $this->transformFileWithRegex($oldFile, $newFile, [
                         '/(\@Component\(\{).*(\n\}\))/s' => '$1' . PHP_EOL . '  selector: \'' . $selector . '\',' .
                             PHP_EOL . '  templateUrl: \'' . $pageDir . '.html\'$2',
-                        '/private/' => 'public'
+                        '/private/' => 'public',
+                        '/img\//' => 'assets/img/'
                     ]);
                 } elseif (strpos($file, '.html') !== false) {
                     $this->transformFileWithRegex($oldFile, $newFile, [
                         '/(ion-content\s+class=\"\s*)' . $pageDir . '/' => '$1',
                         '/\s*class=\"\"/' => '',
-                        '/(<button\s)/' => '$1 ion-button ',
-                        '/\s(primary|secondary|danger|favorite|gray|green|yellow|dark|light|white|green)(\s|\>)/' => ' color="$1" $2',
+                        '/(<button)/' => '$1 ion-button ',
+                        '/\s(primary|secondary|danger|favorite|gray|green|yellow|dark|light|white|green|organge)(\s|\>)/' => ' color="$1" $2',
 //                      '/(<ion-navbar\s*)([a-zA-Z]*)/' => '$1color="$2"'
                     ]);
                 } elseif (strpos($file, '.scss') !== false) {
@@ -122,8 +123,10 @@ class IonicUpgrade extends Angular
         // read old app file
         $oldAppContent = file_get_contents($oldAppFile);
         preg_match_all('/\/\/\s*import\s+services(.*)\/\/\s*import\s+page/s', $oldAppContent, $matches);
+        var_dump($matches);
         $importServices = str_replace('./services', '../services', $matches[1][0]);
         preg_match_all('/MyApp,\s*\[([a-z,A-Z\,\s]*)\]/', $oldAppContent, $matches);
+        var_dump($matches);
         $serviceNames = str_replace(' ', PHP_EOL . '    ', $matches[1][0]);
 
         // write module file
@@ -146,12 +149,13 @@ class IonicUpgrade extends Angular
 
         // write component file
         $this->transformFileWithRegex($oldAppFile, $appComponentFile, [
-            '/\/\/\s*import\s*services.*(\/\/\s*import)/s' => '$1',
+            '/,\s*ionicBootstrap/' => '',
+            '/\/\/\s*import\s*services.*(\/\/\s*import\s*page)/s' => '$1',
             '/\.\/page/' => '../page',
             '/private/' => 'public',
             //'/this\.rootPage/' => 'rootPage',
             '/ionicBootstrap\(.*/' => '',
-            '/build\//' => '../'
+            '/build\/app\.html/' => 'app.html'
         ]);
 
         // write app.html
@@ -169,12 +173,10 @@ class IonicUpgrade extends Angular
         // write css files
         preg_match_all('/\$colors:\s*\(.*\);/s', file_get_contents($oldVariableCSSFile), $matches);
         $this->transformFileWithRegex($newVariableCSSFile, $newVariableCSSFile, [
-            '/\$colors:\s*\(.*\);/s' => $matches[0][0],
-            '/(ionicons\";)/' => '$1' . PHP_EOL . '@import "global";'
+            '/\$colors:\s*\(.*\);/s' => $matches[0][0]
         ]);
-        preg_match_all('/@import.*";(.*)/s', file_get_contents($oldAppCSSFile), $matches);
-        $this->transformFileWithRegex($newAppCSSFile, $newAppCSSFile, [
-            '/variables\.scss\./' => '$1' . PHP_EOL . $matches[1][0],
+        $this->transformFileWithRegex($oldAppCSSFile, $newAppCSSFile, [
+            '/@import[a-zA-Z0-9\.\"\'\-\/\s]*;/' => '',
             '/scroll-content/' => '.scroll-content',
             '/img\//' => 'assets/img/'
         ]);
