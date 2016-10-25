@@ -94,7 +94,7 @@ class Ionic extends Angular
 
         foreach ($services as $service) {
             $serviceText .= "import {" . $service . "Service} from '../../services/" . $this->_convertFileName($service) . "-service';" . PHP_EOL;
-            $serviceVars .= ", private " . lcfirst($service) . "Service: " . $service . "Service";
+            $serviceVars .= ", public " . lcfirst($service) . "Service: " . $service . "Service";
         }
 
         // templates

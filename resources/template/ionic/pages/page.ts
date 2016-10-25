@@ -14,5 +14,5 @@ import {NavController} from 'ionic-angular';
 })
 export class {PageName}Page {
 
-  constructor(private nav: NavController/* define services */) {}
+  constructor(public nav: NavController/* define services */) {}
 }
