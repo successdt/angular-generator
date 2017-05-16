@@ -4,6 +4,7 @@ namespace Hottab\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Inspiring;
+use Illuminate\Support\Facades\Storage;
 
 class IonicUpgrade extends Angular
 {
@@ -50,6 +51,8 @@ class IonicUpgrade extends Angular
         $this->project = $this::ROOT_DIR . '/' . $projectName;
 
         $this->updatePackage();
+        //$this->updateAppModule();
+        //$this->updateTemplates();
     }
 
     /**
@@ -69,11 +72,45 @@ class IonicUpgrade extends Angular
                 if (isset($arrOldContent[$key][$package])) {
                     $oldContent = preg_replace('/\"' . preg_quote($package, '/') . '\":\s\\"([^\"]+)\"/', '"' . $package . '": "' . $version . '"', $oldContent);
                 }
+
             }
         }
 
         file_put_contents($this->project . '/package.json', $oldContent);
 
         echo "Finished updating package.json" . PHP_EOL;
+    }
+
+    public function updateAppModule()
+    {
+        $filePath = $this->project . '/src/app/app.module.ts';
+        $oldContent = file_get_contents($filePath);
+        $oldContent = str_replace("'./app.component';", "'./app.component';\nimport { BrowserModule } from '@angular/platform-browser';", $oldContent);
+        $oldContent = str_replace("IonicModule.forRoot(MyApp)", "BrowserModule,\n    IonicModule.forRoot(MyApp)", $oldContent);
+        file_put_contents($filePath, $oldContent);
+
+        echo "Finished updating app.module.ts" . PHP_EOL;
+    }
+
+    public function updateTemplates()
+    {
+        $path = $this->project . '/src/pages/';
+        $pages = scandir($path);
+
+        foreach ($pages as $page) {
+            if ($page != '.' && $page != '..') {
+                $file = $path . $page . '/' . $page . '.html';
+                $content = file_get_contents($file);
+                // add ion-text to h1->h6, span, p
+                $content = preg_replace('/(<(h[\d]|span|p|i|a)\s+[^>]*)(color)/i', '$1ion-text $3', $content);
+                // update grid
+                $content = str_replace('width-50', 'col-6', $content);
+                $content = str_replace('width-33', 'col-4', $content);
+
+                file_put_contents($file, $content);
+            }
+        }
+
+        echo "Finished updating templates" . PHP_EOL;
     }
 }

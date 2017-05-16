@@ -14,7 +14,7 @@ export class {ServiceName}Service {
   }
 
   getItem(id) {
-    for (var i = 0; i < this.{serviceNames}.length; i++) {
+    for (let i = 0; i < this.{serviceNames}.length; i++) {
       if (this.{serviceNames}[i].id === parseInt(id)) {
         return this.{serviceNames}[i];
       }
