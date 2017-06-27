@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
 import {Platform} from 'ionic-angular';
 import {ViewChild} from '@angular/core';
-import {StatusBar} from 'ionic-native';
+import {StatusBar} from '@ionic-native/status-bar';
+import {SplashScreen} from '@ionic-native/splash-screen';
 
 // import pages
 // end import pages
@@ -28,13 +29,14 @@ export class MyApp {
     // import menu
   ];
 
-  constructor(public platform: Platform) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
     this.rootPage = HomePage;
 
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      StatusBar.styleDefault();
+      statusBar.styleDefault();
+      splashScreen.hide();
     });
   }
 
