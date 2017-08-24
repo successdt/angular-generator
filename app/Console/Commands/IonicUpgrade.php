@@ -52,7 +52,9 @@ class IonicUpgrade extends Angular
 
         $this->updatePackage();
         //$this->updateAppModule();
+        //$this->updateAppComponent();
         //$this->updateTemplates();
+        //$this->updateIndexFile();
     }
 
     /**
@@ -63,6 +65,10 @@ class IonicUpgrade extends Angular
         $updateAvailable = ['dependencies', 'devDependencies'];
         $newContent = json_decode(file_get_contents(storage_path('app/ionic/package.json')), true);
         $oldContent = file_get_contents($this->project . '/package.json');
+        
+//        $oldContent = str_replace('"ionic-native"', '"@ionic-native/core"', $oldContent);
+//        $oldContent = str_replace('    "@angular/platform-server": "2.4.8",',"    \"@ionic-native/splash-screen\": \"3.12.1\",\n    \"@ionic-native/status-bar\": \"3.12.1\",", $oldContent);
+
         $arrOldContent = json_decode($oldContent, true);
 
         echo "Updating package.json" . PHP_EOL;
@@ -85,8 +91,8 @@ class IonicUpgrade extends Angular
     {
         $filePath = $this->project . '/src/app/app.module.ts';
         $oldContent = file_get_contents($filePath);
-        $oldContent = str_replace("'./app.component';", "'./app.component';\nimport { BrowserModule } from '@angular/platform-browser';", $oldContent);
-        $oldContent = str_replace("IonicModule.forRoot(MyApp)", "BrowserModule,\n    IonicModule.forRoot(MyApp)", $oldContent);
+        $oldContent = str_replace("'@angular/platform-browser';", "'@angular/platform-browser';\nimport {StatusBar} from '@ionic-native/status-bar';\nimport {SplashScreen} from '@ionic-native/splash-screen';", $oldContent);
+        $oldContent = str_replace("providers: [", "providers: [\n    StatusBar,\n    SplashScreen,", $oldContent);
         file_put_contents($filePath, $oldContent);
 
         echo "Finished updating app.module.ts" . PHP_EOL;
@@ -112,5 +118,30 @@ class IonicUpgrade extends Angular
         }
 
         echo "Finished updating templates" . PHP_EOL;
+    }
+
+    public function updateIndexFile() {
+        $filePath = $this->project . '/src/index.html';
+        $oldContent = file_get_contents($filePath);
+        $oldContent = str_replace('<!-- cordova.js required for cordova apps -->', "", $oldContent);
+        $oldContent = str_replace('<script src="cordova.js"></script>', "", $oldContent);
+        $oldContent = str_replace('<script src="build/polyfills.js"></script>', "<script src=\"build/polyfills.js\"></script>\n\n  <!-- The vendor js is generated during the build process\n       It contains all of the dependencies in node_modules -->\n  <script src=\"build/vendor.js\"></script>", $oldContent);
+        $oldContent = str_replace('<meta name="theme-color" content="#4e8ef7">', "<meta name=\"theme-color\" content=\"#4e8ef7\">\n\n  <!-- cordova.js required for cordova apps -->\n  <script src=\"cordova.js\"></script>", $oldContent);
+        file_put_contents($filePath, $oldContent);
+
+        echo "Finished updating index.html" . PHP_EOL;
+    }
+
+    public function updateAppComponent()
+    {
+        $filePath = $this->project . '/src/app/app.component.ts';
+        $oldContent = file_get_contents($filePath);
+        $oldContent = str_replace("import {StatusBar} from 'ionic-native';", "import {StatusBar} from '@ionic-native/status-bar';\nimport {SplashScreen} from '@ionic-native/splash-screen';", $oldContent);
+        $oldContent = str_replace("platform: Platform", "platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen", $oldContent);
+        $oldContent = str_replace("public platform: Platform", "platform: Platform", $oldContent);
+        $oldContent = str_replace("StatusBar.styleDefault();", "statusBar.styleDefault();\n      splashScreen.hide();", $oldContent);
+        file_put_contents($filePath, $oldContent);
+
+        echo "Finished updating app.module.ts" . PHP_EOL;
     }
 }
